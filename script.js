@@ -1,6 +1,6 @@
 const SUM = "+";
 const SUBTRACT = "-";
-const MULTIPLY = "*";
+const MULTIPLY = "x";
 const DIVIDE = "/";
 
 let firstOperand;
@@ -35,3 +35,41 @@ operatorButtons.forEach(btn => btn.addEventListener("click", () => {
 
     console.log(`Now: ${firstOperand} ${operator}`);
 }));
+
+// Handle operate (=) button
+const operateButton = document.querySelector(".operate-btn")
+operateButton.addEventListener("click", () => {
+    secondOperand = Number(primaryDisplay.textContent);
+    operate();
+});
+
+function operate() {
+    let result;
+
+    switch (operator) {
+        case SUM:
+            result = firstOperand + secondOperand;
+            break;
+        case SUBTRACT:
+            result = firstOperand - secondOperand;
+            break;
+        case MULTIPLY:
+            result = firstOperand * secondOperand;
+            break;
+        case DIVIDE:
+            result = firstOperand / secondOperand;
+            break;
+        default:
+            if (!Number.isInteger(firstOperand))
+                console.error(`First number ${firstOperand} is not integer`);
+            else if (!Number.isInteger(secondOperand))
+                console.error(`Second number ${secondOperand} is not integer`);
+            else if (operator !== "+" || operator !== "-" || operator !== "x" || operator !== "/")
+                console.error(`Invalid operator "${operator}"`);
+            else
+                console.error("Unexpected error.");
+            break;
+    }
+
+    console.log(result)
+}
