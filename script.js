@@ -6,6 +6,7 @@ const DIVIDE = "/";
 let firstOperand;
 let secondOperand;
 let operator;
+let result;
 
 // Get primary display element
 const primaryDisplay = document.querySelector(".primary-display");
@@ -32,20 +33,18 @@ operatorButtons.forEach(btn => btn.addEventListener("click", () => {
     operator = btn.textContent;
     secondaryDisplay.textContent = primaryDisplay.textContent + " " + btn.textContent;
     primaryDisplay.textContent = "0";
-
-    console.log(`Now: ${firstOperand} ${operator}`);
 }));
 
 // Handle operate (=) button
 const operateButton = document.querySelector(".operate-btn")
 operateButton.addEventListener("click", () => {
     secondOperand = Number(primaryDisplay.textContent);
+    secondaryDisplay.textContent += " " + primaryDisplay.textContent;
     operate();
+    primaryDisplay.textContent = result;
 });
 
 function operate() {
-    let result;
-
     switch (operator) {
         case SUM:
             result = firstOperand + secondOperand;
