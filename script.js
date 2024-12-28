@@ -16,7 +16,7 @@ primaryDisplay.textContent = "0";
 const secondaryDisplay = document.querySelector(".secondary-display");
 secondaryDisplay.textContent = "Enter the first operand";
 
-// Handle operand buttons
+// Handle operand button click
 const operandButtons = document.querySelectorAll(".operand-btn");
 operandButtons.forEach(btn => btn.addEventListener("click", () => {
     if(primaryDisplay.textContent === "0") {
@@ -26,7 +26,7 @@ operandButtons.forEach(btn => btn.addEventListener("click", () => {
     primaryDisplay.textContent += btn.textContent;
 }));
 
-// Handle operator buttons
+// Handle operator buttons click
 const operatorButtons = document.querySelectorAll(".operator-btn");
 operatorButtons.forEach(btn => btn.addEventListener("click", () => {
     firstOperand = Number(primaryDisplay.textContent);
@@ -35,7 +35,7 @@ operatorButtons.forEach(btn => btn.addEventListener("click", () => {
     primaryDisplay.textContent = "0";
 }));
 
-// Handle operate (=) button
+// Handle operate (=) button click
 const operateButton = document.querySelector(".operate-btn")
 operateButton.addEventListener("click", () => {
     secondOperand = Number(primaryDisplay.textContent);
@@ -44,6 +44,8 @@ operateButton.addEventListener("click", () => {
     primaryDisplay.textContent = result;
 });
 
+// Operates according to the operator value, usign firstOperand and secondOperand.
+// Throws console.error() if there are invalid values
 function operate() {
     switch (operator) {
         case SUM:
