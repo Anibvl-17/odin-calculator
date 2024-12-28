@@ -8,6 +8,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Consolas';
 }
 
 .container {
@@ -18,7 +19,21 @@ body {
 }
 
 .display-container {
-    margin: 8px;
+    margin: 0 0 12px 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.primary-display {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.secondary-display {
+    color: gray;
 }
 
 .buttons-container {
