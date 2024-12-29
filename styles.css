@@ -83,7 +83,11 @@ button:hover {
 }
 
 button:active {
-    filter: brightness(120%);
+    filter: brightness(130%);
+}
+
+.active-operator {
+    filter: brightness(130%);
 }
 
 .operand-btn {
