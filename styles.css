@@ -6,16 +6,18 @@ body {
     height: 100%;
     margin: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: space-around;
     font-family: 'Consolas';
 }
 
 .container {
+    flex: 1 1 30%;
     display: flex;
     flex-flow: column nowrap;
     border: 2px solid black;
     padding: 16px;
+    max-width: 30%;
 }
 
 .display-container {
@@ -38,15 +40,22 @@ p {
 
 .buttons-container {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column nowrap;
+    gap: 12px;
+}
+
+.buttons-container div {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 12px;
 }
 
 button {
+    box-sizing: border-box;
     flex: 1 1 25%;
-    min-width: 25%;
-    padding: 12px;
+    padding: 24px 12px;
 }
 
 .operate-btn {
-    flex: 2 2 50%;
+    flex: 1 1 calc(50% + 12px);
 }
