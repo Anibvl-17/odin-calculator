@@ -1,5 +1,16 @@
+/* Color Palette from: https://colorhunt.co/palette/22283131363f76abaeeeeeee
+Background: #222831
+On-Background: #31363F
+Text: #EEEEEE
+
+Action Buttons:  #265073
+Operate Button:  #76ABAE
+Operand Buttons: #2D9596
+*/
+
 * {
     font-family: 'Orbitron', monospace;
+    color: #EEEEEE;
 }
 
 html {
@@ -12,15 +23,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    background-color: #222831;
 }
 
 .container {
     flex: 1 1 30%;
     display: flex;
     flex-flow: column nowrap;
-    border: 2px solid black;
     padding: 16px;
     max-width: 30%;
+    box-shadow: 0px 15px 15px 15px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    background-color: #31363F;
 }
 
 .display-container {
@@ -33,12 +47,13 @@ p {
 }
 
 .primary-display {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 700;
 }
 
 .secondary-display {
-    color: gray;
+    color: rgb(165, 165, 165);
+    font-size: 18px;
 }
 
 .buttons-container {
@@ -59,13 +74,29 @@ button {
     padding: 24px 12px;
     font-size: 16px;
     font-weight: 700;
+    border: 0;
+    border-radius: 6px;
+}
+
+button:hover {
+    filter: brightness(110%);
+}
+
+button:active {
+    filter: brightness(120%);
+}
+
+.operand-btn {
+    background-color: #2D9596;
 }
 
 .operator-btn,
 .action-btn {
+    background-color: #265073;
     font-size: 18px;
 }
 
 .operate-btn {
+    background-color: #76ABAE;
     flex: 1 1 calc(50% + 12px);
 }
