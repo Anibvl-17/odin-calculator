@@ -84,7 +84,7 @@ document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
 document.querySelector(".clear-btn").addEventListener("click", () => {
     primaryDisplay.textContent = primaryDisplay.textContent.slice(0, -1);
     updateOperand();
-    
+
     if (primaryDisplay.textContent == "") {
         primaryDisplay.textContent = "0";
     }
@@ -101,13 +101,6 @@ document.querySelector(".signed-btn").addEventListener("click", () => {
     updateOperand();
 });
 
-// Automatically updates operand according to the currentOperand value
-function updateOperand() {
-    currentOperand == FIRST_OPERAND ? 
-        firstOperand  = Number(primaryDisplay.textContent):
-        secondOperand = Number(primaryDisplay.textContent);
-}
-
 // Handle Dot (.) button click
 document.querySelector(".dot-btn").addEventListener("click", () => {
     if (primaryDisplay.textContent.includes(".")) {
@@ -116,6 +109,14 @@ document.querySelector(".dot-btn").addEventListener("click", () => {
 
     primaryDisplay.textContent += ".";
 });
+
+// Automatically updates operand according to the currentOperand value
+function updateOperand() {
+    currentOperand == FIRST_OPERAND ? 
+        firstOperand  = Number(primaryDisplay.textContent):
+        secondOperand = Number(primaryDisplay.textContent);
+}
+
 
 // Operates according to the operator value, usign firstOperand and secondOperand.
 // Throws console.error() if there are invalid values
