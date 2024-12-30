@@ -31,8 +31,9 @@ operandButtons.forEach((btn) =>
       clearAll();
     }
 
-    // Prevents leading one or more zeros.
-    if (primaryDisplay.textContent === "0") {
+    // Prevents leading one or more zeros, or clear if the display is
+    // showing the ERROR_DIVISION message
+    if (primaryDisplay.textContent === "0" || primaryDisplay.textContent === ERROR_DIVISION) {
       primaryDisplay.textContent = "";
     }
 
@@ -45,28 +46,28 @@ operandButtons.forEach((btn) =>
 // Handle operator buttons click
 const operatorButtons = document.querySelectorAll(".operator-btn");
 operatorButtons.forEach((btn) =>
-  btn.addEventListener("click", () => {
-    if (primaryDisplay.textContent == ERROR_DIVISION) {
-      clearAll();
-      return;
-    }
-
+  btn.addEventListener("click", () => {    
     if (isOperatorActive) {
       document
         .querySelector(".active-operator")
         .classList.remove("active-operator");
-      operate();
+        operate();
     }
 
-    operator = btn.textContent;
-    isOperatorActive = true;
+    
+    if (primaryDisplay.textContent == ERROR_DIVISION) {
+      return;
+    }
+    
     currentOperand = SECOND_OPERAND;
-
+    operator = btn.textContent;
     btn.classList.add("active-operator");
+    isOperatorActive = true;
 
     secondaryDisplay.textContent = primaryDisplay.textContent + " " + operator;
     primaryDisplay.textContent = "0";
     secondOperand = 0;
+    
   })
 );
 
@@ -78,6 +79,10 @@ operateButton.addEventListener("click", () => {
       .querySelector(".active-operator")
       .classList.remove("active-operator");
     isOperatorActive = false;
+  }
+
+  if (primaryDisplay.textContent == ERROR_DIVISION) {
+    return;
   }
 
   updateOperand();
@@ -142,13 +147,8 @@ function operate() {
         secondOperand == 0 ||
         !Number.isFinite(firstOperand / secondOperand)
       ) {
+        clearAll();
         primaryDisplay.textContent = ERROR_DIVISION;
-        secondaryDisplay.textContent = `${firstOperand} ${operator} ${secondOperand} =`;
-        firstOperand = 0;
-        secondOperand = 0;
-        currentOperand = FIRST_OPERAND;
-        operator = NO_OPERATION;
-        result = null;
         return;
       }
 
@@ -164,10 +164,10 @@ function operate() {
       else if (!Number.isFinite(secondOperand))
         console.error(`Second operand ${secondOperand} is not valid`);
       else if (
-        operator !== "+" ||
-        operator !== "-" ||
-        operator !== "x" ||
-        operator !== "/"
+        operator !== SUM ||
+        operator !== SUBTRACT ||
+        operator !== MULTIPLY ||
+        operator !== DIVIDE
       )
         console.error(`Invalid operator "${operator}"`);
       else console.error("Unexpected error.");
