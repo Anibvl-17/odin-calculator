@@ -101,6 +101,15 @@ function updateOperand() {
         secondOperand = Number(primaryDisplay.textContent);
 }
 
+// Handle Dot (.) button click
+document.querySelector(".dot-btn").addEventListener("click", () => {
+    if (primaryDisplay.textContent.includes(".")) {
+        return;
+    }
+
+    primaryDisplay.textContent += ".";
+});
+
 // Operates according to the operator value, usign firstOperand and secondOperand.
 // Throws console.error() if there are invalid values
 function operate() {
