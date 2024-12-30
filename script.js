@@ -81,7 +81,14 @@ operateButton.addEventListener("click", () => {
 document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
 
 // Handle Clear (C) button click
-const clearButton = document.querySelector(".clear-btn");
+document.querySelector(".clear-btn").addEventListener("click", () => {
+    primaryDisplay.textContent = primaryDisplay.textContent.slice(0, -1);
+    updateOperand();
+    
+    if (primaryDisplay.textContent == "") {
+        primaryDisplay.textContent = "0";
+    }
+});
 
 // Handle Signed (+/-) button click
 document.querySelector(".signed-btn").addEventListener("click", () => {
