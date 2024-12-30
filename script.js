@@ -84,7 +84,15 @@ document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
 const clearButton = document.querySelector(".clear-btn");
 
 // Handle Signed (+/-) button click
-const signedButton = document.querySelector(".signed-btn");
+document.querySelector(".signed-btn").addEventListener("click", () => {
+    if (primaryDisplay.textContent == ERROR_DIVISION) {
+        clearAll();
+        return;
+    }
+
+    primaryDisplay.textContent = Number(primaryDisplay.textContent) * -1;
+    updateOperand();
+});
 
 // Automatically updates operand according to the currentOperand value
 function updateOperand() {
