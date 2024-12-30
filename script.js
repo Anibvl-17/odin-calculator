@@ -33,7 +33,10 @@ operandButtons.forEach((btn) =>
 
     // Prevents leading one or more zeros, or clear if the display is
     // showing the ERROR_DIVISION message
-    if (primaryDisplay.textContent === "0" || primaryDisplay.textContent === ERROR_DIVISION) {
+    if (
+      primaryDisplay.textContent === "0" ||
+      primaryDisplay.textContent === ERROR_DIVISION
+    ) {
       primaryDisplay.textContent = "";
     }
 
@@ -46,19 +49,18 @@ operandButtons.forEach((btn) =>
 // Handle operator buttons click
 const operatorButtons = document.querySelectorAll(".operator-btn");
 operatorButtons.forEach((btn) =>
-  btn.addEventListener("click", () => {    
+  btn.addEventListener("click", () => {
     if (isOperatorActive) {
       document
         .querySelector(".active-operator")
         .classList.remove("active-operator");
-        operate();
+      operate();
     }
 
-    
     if (primaryDisplay.textContent == ERROR_DIVISION) {
       return;
     }
-    
+
     currentOperand = SECOND_OPERAND;
     operator = btn.textContent;
     btn.classList.add("active-operator");
@@ -67,7 +69,6 @@ operatorButtons.forEach((btn) =>
     secondaryDisplay.textContent = primaryDisplay.textContent + " " + operator;
     primaryDisplay.textContent = "0";
     secondOperand = 0;
-    
   })
 );
 
