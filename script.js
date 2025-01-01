@@ -122,7 +122,9 @@ document.querySelector(".signed-btn").addEventListener("click", () => {
 
 // Handle Dot (.) button click
 document.querySelector(".dot-btn").addEventListener("click", () => {
-  if (primaryDisplay.textContent.includes(".")) {
+  if (operator == NO_OPERATION && result != null) {
+    clearAll();
+  } else if (primaryDisplay.textContent.includes(".")) {
     return;
   }
 
