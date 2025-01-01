@@ -66,7 +66,13 @@ operatorButtons.forEach((btn) =>
     btn.classList.add("active-operator");
     isOperatorActive = true;
 
-    secondaryDisplay.textContent = primaryDisplay.textContent + " " + operator;
+    let primaryDisplayText = primaryDisplay.textContent;
+
+    if (primaryDisplayText.endsWith(".")) {
+      primaryDisplayText = primaryDisplayText.slice(0, -1);
+    }
+
+    secondaryDisplay.textContent = primaryDisplayText + " " + operator;
     primaryDisplay.textContent = "0";
     secondOperand = 0;
   })
