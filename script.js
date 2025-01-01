@@ -103,7 +103,7 @@ document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
 document.querySelector(".clear-btn").addEventListener("click", () => {
   if (
     primaryDisplay.textContent == ERROR_DIVISION ||
-    operator == NO_OPERATION && result != null
+    (operator == NO_OPERATION && result != null)
   ) {
     clearAll();
     return;
@@ -119,8 +119,9 @@ document.querySelector(".clear-btn").addEventListener("click", () => {
 
 // Handle Signed (+/-) button click
 document.querySelector(".signed-btn").addEventListener("click", () => {
-  if (primaryDisplay.textContent == ERROR_DIVISION
-    || operator == NO_OPERATION && result != null
+  if (
+    primaryDisplay.textContent == ERROR_DIVISION ||
+    (operator == NO_OPERATION && result != null)
   ) {
     clearAll();
     return;
@@ -183,9 +184,9 @@ function operate() {
       else if (!Number.isFinite(secondOperand))
         console.error(`Second operand ${secondOperand} is not valid`);
       else if (
-        operator !== SUM ||
-        operator !== SUBTRACT ||
-        operator !== MULTIPLY ||
+        operator !== SUM &&
+        operator !== SUBTRACT &&
+        operator !== MULTIPLY &&
         operator !== DIVIDE
       )
         console.error(`Invalid operator "${operator}"`);
