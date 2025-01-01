@@ -109,7 +109,7 @@ document.querySelector(".clear-btn").addEventListener("click", () => {
   primaryDisplay.textContent = primaryDisplay.textContent.slice(0, -1);
   updateOperand();
 
-  if (primaryDisplay.textContent == "") {
+  if (primaryDisplay.textContent == "" || primaryDisplay.textContent == "-") {
     primaryDisplay.textContent = "0";
   }
 });
