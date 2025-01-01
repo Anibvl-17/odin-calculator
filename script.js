@@ -101,6 +101,11 @@ document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
 
 // Handle Clear (C) button click
 document.querySelector(".clear-btn").addEventListener("click", () => {
+  if (primaryDisplay.textContent == ERROR_DIVISION) {
+    clearAll();
+    return;
+  }
+
   primaryDisplay.textContent = primaryDisplay.textContent.slice(0, -1);
   updateOperand();
 
