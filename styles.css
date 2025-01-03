@@ -22,16 +22,18 @@ body {
     margin: 0;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2vw;
     background-color: #222831;
+    padding-inline: 4vw;
 }
 
-.container {
-    flex: 1 1 30%;
+.container, .history-container {
+    flex: 1 1 40vw;
     display: flex;
     flex-flow: column nowrap;
     padding: 16px;
-    max-width: 30%;
     box-shadow: 0px 15px 15px 15px rgba(0,0,0,0.1);
     border-radius: 6px;
     background-color: #31363F;
@@ -51,7 +53,7 @@ p {
     font-weight: 700;
 }
 
-.secondary-display {
+.secondary-display, .history-title {
     color: rgb(165, 165, 165);
     font-size: 18px;
 }
