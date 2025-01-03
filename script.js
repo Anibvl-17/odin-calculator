@@ -9,7 +9,6 @@ const TEXT_ZERO = "0";
 const TEXT_INITIAL = "Enter the first number";
 const TEXT_EMPTY = "";
 
-
 const FIRST_OPERAND = 1;
 const SECOND_OPERAND = 2;
 let currentOperand = FIRST_OPERAND;
@@ -20,10 +19,10 @@ let operator = NO_OPERATION;
 let result = null;
 let isOperatorActive = false;
 
-const ERROR_DIVISION = "I guess we'll never know...";
 const ERROR_BAD_FIRST_OPERAND = `First operand ${firstOperand} is not valid`;
 const ERROR_BAD_SECOND_OPERAND = `Second operand ${secondOperand} is not valid`;
 const ERROR_BAD_OPERATOR = `Invalid operator "${operator}"`;
+const ERROR_DIVISION = "I guess we'll never know...";
 const ERROR_UNEXPECTED = "Unexpected error.";
 
 // History of operations, saved as "firstOperand operator secondOperand = result"
@@ -38,64 +37,70 @@ secondaryDisplay.textContent = TEXT_INITIAL;
 historyContainer.textContent = TEXT_NO_HISTORY;
 
 // Handle operand button click
-const operandButtons = document.querySelectorAll(".operand-btn");
-operandButtons.forEach((btn) =>
-  btn.addEventListener("click", () => {
-    // Clear all if there is a result and a new number is being typed
-    if (operator == NO_OPERATION && result != null) {
-      clearAll();
-    }
-
-    // Prevents leading one or more zeros, or clear if the display is
-    // showing the ERROR_DIVISION message
-    if (
-      primaryDisplay.textContent === TEXT_ZERO ||
-      primaryDisplay.textContent === ERROR_DIVISION
-    ) {
-      primaryDisplay.textContent = TEXT_EMPTY;
-    }
-
-    primaryDisplay.textContent += btn.textContent;
-
-    updateOperand();
-  })
+document.querySelectorAll(".operand-btn").forEach((operandButton) =>
+  operandButton.addEventListener("click", handleOperandClick)
 );
 
 // Handle operator buttons click
-const operatorButtons = document.querySelectorAll(".operator-btn");
-operatorButtons.forEach((btn) =>
-  btn.addEventListener("click", () => {
-    if (isOperatorActive) {
-      document
-        .querySelector(".active-operator")
-        .classList.remove("active-operator");
-      operate();
-    }
-
-    if (primaryDisplay.textContent == ERROR_DIVISION) {
-      return;
-    }
-
-    currentOperand = SECOND_OPERAND;
-    operator = btn.textContent;
-    btn.classList.add("active-operator");
-    isOperatorActive = true;
-
-    let primaryDisplayText = primaryDisplay.textContent;
-
-    if (primaryDisplayText.endsWith(".")) {
-      primaryDisplayText = primaryDisplayText.slice(0, -1);
-    }
-
-    secondaryDisplay.textContent = `${primaryDisplayText} ${operator}`;
-    primaryDisplay.textContent = TEXT_ZERO;
-    secondOperand = 0;
-  })
+document.querySelectorAll(".operator-btn").forEach((operatorButton) => 
+  operatorButton.addEventListener("click", handleOperatorClick)
 );
 
-// Handle operate (=) button click
-const operateButton = document.querySelector(".operate-btn");
-operateButton.addEventListener("click", () => {
+document.querySelector(".operate-btn").addEventListener("click", handleOperateClick);
+document.querySelector(".signed-btn").addEventListener("click", handleSignedClick);
+document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
+document.querySelector(".clear-btn").addEventListener("click", handleClearClick);
+document.querySelector(".dot-btn").addEventListener("click", handleDotClick);
+
+function handleOperandClick() {
+  // Clear all if there is a result and a new number is being typed
+  if (operator == NO_OPERATION && result != null) {
+    clearAll();
+  }
+
+  // Prevents leading one or more zeros, or clear if the display is
+  // showing the ERROR_DIVISION message
+  if (
+    primaryDisplay.textContent === TEXT_ZERO ||
+    primaryDisplay.textContent === ERROR_DIVISION
+  ) {
+    primaryDisplay.textContent = TEXT_EMPTY;
+  }
+
+  primaryDisplay.textContent += this.textContent;
+
+  updateOperand();
+}
+
+function handleOperatorClick() {
+  if (isOperatorActive) {
+    document
+      .querySelector(".active-operator")
+      .classList.remove("active-operator");
+    operate();
+  }
+
+  if (primaryDisplay.textContent == ERROR_DIVISION) {
+    return;
+  }
+
+  currentOperand = SECOND_OPERAND;
+  operator = this.textContent;
+  this.classList.add("active-operator");
+  isOperatorActive = true;
+
+  let primaryDisplayText = primaryDisplay.textContent;
+
+  if (primaryDisplayText.endsWith(".")) {
+    primaryDisplayText = primaryDisplayText.slice(0, -1);
+  }
+
+  secondaryDisplay.textContent = `${primaryDisplayText} ${operator}`;
+  primaryDisplay.textContent = TEXT_ZERO;
+  secondOperand = 0;
+}
+
+function handleOperateClick() {
   if (isOperatorActive) {
     document
       .querySelector(".active-operator")
@@ -109,13 +114,9 @@ operateButton.addEventListener("click", () => {
 
   updateOperand();
   operate();
-});
+}
 
-// Handle Clear all (AC) button click
-document.querySelector(".clear-all-btn").addEventListener("click", clearAll);
-
-// Handle Clear (C) button click
-document.querySelector(".clear-btn").addEventListener("click", () => {
+function handleClearClick() {
   if (
     primaryDisplay.textContent == ERROR_DIVISION ||
     (operator == NO_OPERATION && result != null)
@@ -133,10 +134,9 @@ document.querySelector(".clear-btn").addEventListener("click", () => {
   ) {
     primaryDisplay.textContent = TEXT_ZERO;
   }
-});
+}
 
-// Handle Signed (+/-) button click
-document.querySelector(".signed-btn").addEventListener("click", () => {
+function handleSignedClick() {
   if (
     primaryDisplay.textContent == ERROR_DIVISION ||
     (operator == NO_OPERATION && result != null)
@@ -147,10 +147,9 @@ document.querySelector(".signed-btn").addEventListener("click", () => {
 
   primaryDisplay.textContent = Number(primaryDisplay.textContent) * -1;
   updateOperand();
-});
+}
 
-// Handle Dot (.) button click
-document.querySelector(".dot-btn").addEventListener("click", () => {
+function handleDotClick() {
   if (operator == NO_OPERATION && result != null) {
     clearAll();
   } else if (primaryDisplay.textContent.includes(".")) {
@@ -158,7 +157,7 @@ document.querySelector(".dot-btn").addEventListener("click", () => {
   }
 
   primaryDisplay.textContent += ".";
-});
+}
 
 // Automatically updates operand according to the currentOperand value
 function updateOperand() {
@@ -243,6 +242,7 @@ function operate() {
   operator = NO_OPERATION;
 }
 
+// Resets all values and displays
 function clearAll() {
   firstOperand = 0;
   secondOperand = 0;
