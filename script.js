@@ -36,12 +36,12 @@ primaryDisplay.textContent = TEXT_ZERO;
 secondaryDisplay.textContent = TEXT_INITIAL;
 historyContainer.textContent = TEXT_NO_HISTORY;
 
-// Handle operand button click
+// Add event listeners to all operand buttons
 document.querySelectorAll(".operand-btn").forEach((operandButton) =>
   operandButton.addEventListener("click", handleOperandClick)
 );
 
-// Handle operator buttons click
+// Add event listeners to all operator buttons
 document.querySelectorAll(".operator-btn").forEach((operatorButton) => 
   operatorButton.addEventListener("click", handleOperatorClick)
 );
@@ -58,8 +58,7 @@ function handleOperandClick() {
     clearAll();
   }
 
-  // Prevents leading one or more zeros, or clear if the display is
-  // showing the ERROR_DIVISION message
+  // Clears leading zeros and error messages
   if (
     primaryDisplay.textContent === TEXT_ZERO ||
     primaryDisplay.textContent === ERROR_DIVISION
@@ -244,6 +243,11 @@ function operate() {
 
 // Resets all values and displays
 function clearAll() {
+  if (isOperatorActive) {
+    document
+      .querySelector(".active-operator")
+      .classList.remove("active-operator");
+  }
   firstOperand = 0;
   secondOperand = 0;
   operator = NO_OPERATION;
