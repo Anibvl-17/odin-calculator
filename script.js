@@ -3,8 +3,17 @@ const SUBTRACT = "-";
 const MULTIPLY = "x";
 const DIVIDE = "/";
 const NO_OPERATION = "no_operation";
+
+const TEXT_NO_HISTORY = "No history yet";
+const TEXT_ZERO = "0";
+const TEXT_INITIAL = "Enter the first number";
+const TEXT_EMPTY = "";
+
 const ERROR_DIVISION = "I guess we'll never know...";
-const NO_HISTORY = "No history yet";
+const ERROR_BAD_FIRST_OPERAND = `First operand ${firstOperand} is not valid`;
+const ERROR_BAD_SECOND_OPERAND = `Second operand ${secondOperand} is not valid`;
+const ERROR_BAD_OPERATOR = `Invalid operator "${operator}"`;
+const ERROR_UNEXPECTED = "Unexpected error.";
 
 const FIRST_OPERAND = 1;
 const SECOND_OPERAND = 2;
@@ -24,9 +33,9 @@ const primaryDisplay = document.querySelector(".primary-display");
 const secondaryDisplay = document.querySelector(".secondary-display");
 const historyContainer = document.querySelector(".last-results");
 
-primaryDisplay.textContent = "0";
-secondaryDisplay.textContent = "Enter the first number";
-historyContainer.textContent = NO_HISTORY;
+primaryDisplay.textContent = TEXT_ZERO;
+secondaryDisplay.textContent = TEXT_INITIAL;
+historyContainer.textContent = TEXT_NO_HISTORY;
 
 // Handle operand button click
 const operandButtons = document.querySelectorAll(".operand-btn");
@@ -40,10 +49,10 @@ operandButtons.forEach((btn) =>
     // Prevents leading one or more zeros, or clear if the display is
     // showing the ERROR_DIVISION message
     if (
-      primaryDisplay.textContent === "0" ||
+      primaryDisplay.textContent === TEXT_ZERO ||
       primaryDisplay.textContent === ERROR_DIVISION
     ) {
-      primaryDisplay.textContent = "";
+      primaryDisplay.textContent = TEXT_EMPTY;
     }
 
     primaryDisplay.textContent += btn.textContent;
@@ -78,8 +87,8 @@ operatorButtons.forEach((btn) =>
       primaryDisplayText = primaryDisplayText.slice(0, -1);
     }
 
-    secondaryDisplay.textContent = primaryDisplayText + " " + operator;
-    primaryDisplay.textContent = "0";
+    secondaryDisplay.textContent = `${primaryDisplayText} ${operator}`;
+    primaryDisplay.textContent = TEXT_ZERO;
     secondOperand = 0;
   })
 );
@@ -118,8 +127,11 @@ document.querySelector(".clear-btn").addEventListener("click", () => {
   primaryDisplay.textContent = primaryDisplay.textContent.slice(0, -1);
   updateOperand();
 
-  if (primaryDisplay.textContent == "" || primaryDisplay.textContent == "-") {
-    primaryDisplay.textContent = "0";
+  if (
+    primaryDisplay.textContent == TEXT_EMPTY ||
+    primaryDisplay.textContent == SUBTRACT
+  ) {
+    primaryDisplay.textContent = TEXT_ZERO;
   }
 });
 
@@ -159,15 +171,15 @@ function updateHistory() {
   if (result == null) return;
 
   // Prevents duplication of history and clears the NO_HISTORY message
-  historyContainer.textContent = "";
+  historyContainer.textContent = TEXT_EMPTY;
 
   history.unshift(`${firstOperand} ${operator} ${secondOperand} = ${result}`);
 
   if (history.length > 5) {
-    history.pop()
+    history.pop();
   }
 
-  history.forEach(historyEntry => {
+  history.forEach((historyEntry) => {
     let historyP = document.createElement("p");
     historyP.textContent = historyEntry;
     historyContainer.appendChild(historyP);
@@ -205,17 +217,17 @@ function operate() {
       break;
     default:
       if (!Number.isFinite(firstOperand))
-        console.error(`First operand ${firstOperand} is not valid`);
+        console.error(ERROR_BAD_FIRST_OPERAND);
       else if (!Number.isFinite(secondOperand))
-        console.error(`Second operand ${secondOperand} is not valid`);
+        console.error(ERROR_BAD_SECOND_OPERAND);
       else if (
         operator !== SUM &&
         operator !== SUBTRACT &&
         operator !== MULTIPLY &&
         operator !== DIVIDE
       )
-        console.error(`Invalid operator "${operator}"`);
-      else console.error("Unexpected error.");
+        console.error(ERROR_BAD_OPERATOR);
+      else console.error(ERROR_UNEXPECTED);
       break;
   }
 
@@ -238,6 +250,6 @@ function clearAll() {
   isOperatorActive = false;
   result = null;
   currentOperand = FIRST_OPERAND;
-  primaryDisplay.textContent = "0";
-  secondaryDisplay.textContent = "Enter the first number";
+  primaryDisplay.textContent = TEXT_ZERO;
+  secondaryDisplay.textContent = TEXT_INITIAL;
 }
