@@ -42,7 +42,7 @@ document.querySelectorAll(".operand-btn").forEach((operandButton) =>
 );
 
 // Add event listeners to all operator buttons
-document.querySelectorAll(".operator-btn").forEach((operatorButton) => 
+document.querySelectorAll(".operator-btn").forEach((operatorButton) =>
   operatorButton.addEventListener("click", handleOperatorClick)
 );
 
@@ -72,12 +72,8 @@ function handleOperandClick() {
 }
 
 function handleOperatorClick() {
-  if (isOperatorActive) {
-    document
-      .querySelector(".active-operator")
-      .classList.remove("active-operator");
-    operate();
-  }
+  // Reset operator, true: and operate
+  resetActiveOperator(true);
 
   if (primaryDisplay.textContent == ERROR_DIVISION) {
     return;
@@ -100,17 +96,14 @@ function handleOperatorClick() {
 }
 
 function handleOperateClick() {
-  if (isOperatorActive) {
-    document
-      .querySelector(".active-operator")
-      .classList.remove("active-operator");
-    isOperatorActive = false;
-  }
-
-  if (primaryDisplay.textContent == ERROR_DIVISION) {
+  if (
+    primaryDisplay.textContent == ERROR_DIVISION ||
+    operator == NO_OPERATION
+  ) {
     return;
   }
-
+  
+  resetActiveOperator();
   updateOperand();
   operate();
 }
@@ -243,17 +236,23 @@ function operate() {
 
 // Resets all values and displays
 function clearAll() {
-  if (isOperatorActive) {
-    document
-      .querySelector(".active-operator")
-      .classList.remove("active-operator");
-  }
   firstOperand = 0;
   secondOperand = 0;
   operator = NO_OPERATION;
-  isOperatorActive = false;
+  resetActiveOperator();
   result = null;
   currentOperand = FIRST_OPERAND;
   primaryDisplay.textContent = TEXT_ZERO;
   secondaryDisplay.textContent = TEXT_INITIAL;
+}
+
+function resetActiveOperator(andOperate = false) {
+  if (isOperatorActive) {
+    document
+      .querySelector(".active-operator")
+      .classList.remove("active-operator");
+    isOperatorActive = false;
+
+    if (andOperate) operate();
+  }
 }
