@@ -4,6 +4,7 @@ const MULTIPLY = "x";
 const DIVIDE = "/";
 const NO_OPERATION = "no_operation";
 const ERROR_DIVISION = "I guess we'll never know...";
+const NO_HISTORY = "No history yet";
 
 const FIRST_OPERAND = 1;
 const SECOND_OPERAND = 2;
@@ -16,11 +17,16 @@ let result = null;
 
 let isOperatorActive = false;
 
+// History of operations, saved as "firstOperand operator secondOperand = result"
+const history = [];
+
 const primaryDisplay = document.querySelector(".primary-display");
 const secondaryDisplay = document.querySelector(".secondary-display");
+const historyContainer = document.querySelector(".last-results");
 
 primaryDisplay.textContent = "0";
 secondaryDisplay.textContent = "Enter the first number";
+historyContainer.textContent = NO_HISTORY;
 
 // Handle operand button click
 const operandButtons = document.querySelectorAll(".operand-btn");
@@ -149,6 +155,25 @@ function updateOperand() {
     : (secondOperand = Number(primaryDisplay.textContent));
 }
 
+function updateHistory() {
+  if (result == null) return;
+
+  // Prevents duplication of history and clears the NO_HISTORY message
+  historyContainer.textContent = "";
+
+  history.unshift(`${firstOperand} ${operator} ${secondOperand} = ${result}`);
+
+  if (history.length > 5) {
+    history.pop()
+  }
+
+  history.forEach(historyEntry => {
+    let historyP = document.createElement("p");
+    historyP.textContent = historyEntry;
+    historyContainer.appendChild(historyP);
+  });
+}
+
 // Operates according to the operator value, usign firstOperand and secondOperand.
 // Throws console.error() if there are invalid values
 function operate() {
@@ -198,6 +223,7 @@ function operate() {
     secondaryDisplay.textContent = `${firstOperand} ${operator} ${secondOperand} =`;
   }
 
+  updateHistory();
   primaryDisplay.textContent = result;
   firstOperand = result;
   secondOperand = 0;
