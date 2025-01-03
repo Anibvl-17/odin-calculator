@@ -9,11 +9,6 @@ const TEXT_ZERO = "0";
 const TEXT_INITIAL = "Enter the first number";
 const TEXT_EMPTY = "";
 
-const ERROR_DIVISION = "I guess we'll never know...";
-const ERROR_BAD_FIRST_OPERAND = `First operand ${firstOperand} is not valid`;
-const ERROR_BAD_SECOND_OPERAND = `Second operand ${secondOperand} is not valid`;
-const ERROR_BAD_OPERATOR = `Invalid operator "${operator}"`;
-const ERROR_UNEXPECTED = "Unexpected error.";
 
 const FIRST_OPERAND = 1;
 const SECOND_OPERAND = 2;
@@ -23,8 +18,13 @@ let firstOperand = 0;
 let secondOperand = 0;
 let operator = NO_OPERATION;
 let result = null;
-
 let isOperatorActive = false;
+
+const ERROR_DIVISION = "I guess we'll never know...";
+const ERROR_BAD_FIRST_OPERAND = `First operand ${firstOperand} is not valid`;
+const ERROR_BAD_SECOND_OPERAND = `Second operand ${secondOperand} is not valid`;
+const ERROR_BAD_OPERATOR = `Invalid operator "${operator}"`;
+const ERROR_UNEXPECTED = "Unexpected error.";
 
 // History of operations, saved as "firstOperand operator secondOperand = result"
 const history = [];
