@@ -27,6 +27,7 @@ body {
     gap: 2vw;
     background-color: #222831;
     padding-inline: 4vw;
+    line-height: 1.5;
 }
 
 .container, .history-container {
