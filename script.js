@@ -11,17 +11,18 @@ const TEXT_EMPTY = "";
 
 const FIRST_OPERAND = 1;
 const SECOND_OPERAND = 2;
-let currentOperand = FIRST_OPERAND;
+const calculatorState = {
+  currentOperand: FIRST_OPERAND,
+  firstOperand: 0,
+  secondOperand: 0,
+  operator: NO_OPERATION,
+  result: null,
+  isOperatorActive: false,
+};
 
-let firstOperand = 0;
-let secondOperand = 0;
-let operator = NO_OPERATION;
-let result = null;
-let isOperatorActive = false;
-
-const ERROR_BAD_FIRST_OPERAND = `First operand ${firstOperand} is not valid`;
-const ERROR_BAD_SECOND_OPERAND = `Second operand ${secondOperand} is not valid`;
-const ERROR_BAD_OPERATOR = `Invalid operator "${operator}"`;
+const ERROR_BAD_FIRST_OPERAND = `First operand ${calculatorState.firstOperand} is not valid`;
+const ERROR_BAD_SECOND_OPERAND = `Second operand ${calculatorState.secondOperand} is not valid`;
+const ERROR_BAD_OPERATOR = `Invalid operator "${calculatorState.operator}"`;
 const ERROR_DIVISION = "I guess we'll never know...";
 const ERROR_UNEXPECTED = "Unexpected error.";
 
@@ -54,7 +55,7 @@ document.querySelector(".dot-btn").addEventListener("click", handleDotClick);
 
 function handleOperandClick() {
   // Clear all if there is a result and a new number is being typed
-  if (operator == NO_OPERATION && result != null) {
+  if (calculatorState.operator == NO_OPERATION && calculatorState.result != null) {
     clearAll();
   }
 
@@ -79,10 +80,10 @@ function handleOperatorClick() {
     return;
   }
 
-  currentOperand = SECOND_OPERAND;
-  operator = this.textContent;
+  calculatorState.currentOperand = SECOND_OPERAND;
+  calculatorState.operator = this.textContent;
   this.classList.add("active-operator");
-  isOperatorActive = true;
+  calculatorState.isOperatorActive = true;
 
   let primaryDisplayText = primaryDisplay.textContent;
 
@@ -90,15 +91,15 @@ function handleOperatorClick() {
     primaryDisplayText = primaryDisplayText.slice(0, -1);
   }
 
-  secondaryDisplay.textContent = `${primaryDisplayText} ${operator}`;
+  secondaryDisplay.textContent = `${primaryDisplayText} ${calculatorState.operator}`;
   primaryDisplay.textContent = TEXT_ZERO;
-  secondOperand = 0;
+  calculatorState.secondOperand = 0;
 }
 
 function handleOperateClick() {
   if (
     primaryDisplay.textContent == ERROR_DIVISION ||
-    operator == NO_OPERATION
+    calculatorState.operator == NO_OPERATION
   ) {
     return;
   }
@@ -111,7 +112,7 @@ function handleOperateClick() {
 function handleClearClick() {
   if (
     primaryDisplay.textContent == ERROR_DIVISION ||
-    (operator == NO_OPERATION && result != null)
+    (calculatorState.operator == NO_OPERATION && calculatorState.result != null)
   ) {
     clearAll();
     return;
@@ -131,7 +132,7 @@ function handleClearClick() {
 function handleSignedClick() {
   if (
     primaryDisplay.textContent == ERROR_DIVISION ||
-    (operator == NO_OPERATION && result != null)
+    (calculatorState.operator == NO_OPERATION && calculatorState.result != null)
   ) {
     clearAll();
     return;
@@ -142,7 +143,7 @@ function handleSignedClick() {
 }
 
 function handleDotClick() {
-  if (operator == NO_OPERATION && result != null) {
+  if (calculatorState.operator == NO_OPERATION && calculatorState.result != null) {
     clearAll();
   } else if (primaryDisplay.textContent.includes(".")) {
     return;
@@ -153,18 +154,18 @@ function handleDotClick() {
 
 // Automatically updates operand according to the currentOperand value
 function updateOperand() {
-  currentOperand == FIRST_OPERAND
-    ? (firstOperand = Number(primaryDisplay.textContent))
-    : (secondOperand = Number(primaryDisplay.textContent));
+  calculatorState.currentOperand == FIRST_OPERAND
+    ? (calculatorState.firstOperand = Number(primaryDisplay.textContent))
+    : (calculatorState.secondOperand = Number(primaryDisplay.textContent));
 }
 
 function updateHistory() {
-  if (result == null) return;
+  if (calculatorState.result == null) return;
 
   // Prevents duplication of history and clears the NO_HISTORY message
   historyContainer.textContent = TEXT_EMPTY;
 
-  history.unshift(`${firstOperand} ${operator} ${secondOperand} = ${result}`);
+  history.unshift(`${calculatorState.firstOperand} ${calculatorState.operator} ${calculatorState.secondOperand} = ${calculatorState.result}`);
 
   if (history.length > 5) {
     history.pop();
@@ -180,78 +181,78 @@ function updateHistory() {
 // Operates according to the operator value, usign firstOperand and secondOperand.
 // Throws console.error() if there are invalid values
 function operate() {
-  switch (operator) {
+  switch (calculatorState.operator) {
     case SUM:
-      result = firstOperand + secondOperand;
+      calculatorState.result = calculatorState.firstOperand + calculatorState.secondOperand;
       break;
     case SUBTRACT:
-      result = firstOperand - secondOperand;
+      calculatorState.result = calculatorState.firstOperand - calculatorState.secondOperand;
       break;
     case MULTIPLY:
-      result = firstOperand * secondOperand;
+      calculatorState.result = calculatorState.firstOperand * calculatorState.secondOperand;
       break;
     case DIVIDE:
       if (
-        secondOperand == 0 ||
-        !Number.isFinite(firstOperand / secondOperand)
+        calculatorState.secondOperand == 0 ||
+        !Number.isFinite(calculatorState.firstOperand / calculatorState.secondOperand)
       ) {
         clearAll();
         primaryDisplay.textContent = ERROR_DIVISION;
         return;
       }
 
-      result = firstOperand / secondOperand;
+      calculatorState.result = calculatorState.firstOperand / calculatorState.secondOperand;
       break;
     case NO_OPERATION:
-      firstOperand = Number(primaryDisplay.textContent);
-      result = firstOperand;
+      calculatorState.firstOperand = Number(primaryDisplay.textContent);
+      calculatorState.result = calculatorState.firstOperand;
       break;
     default:
-      if (!Number.isFinite(firstOperand))
+      if (!Number.isFinite(calculatorState.firstOperand))
         console.error(ERROR_BAD_FIRST_OPERAND);
-      else if (!Number.isFinite(secondOperand))
+      else if (!Number.isFinite(calculatorState.secondOperand))
         console.error(ERROR_BAD_SECOND_OPERAND);
       else if (
-        operator !== SUM &&
-        operator !== SUBTRACT &&
-        operator !== MULTIPLY &&
-        operator !== DIVIDE
+        calculatorState.operator !== SUM &&
+        calculatorState.operator !== SUBTRACT &&
+        calculatorState.operator !== MULTIPLY &&
+        calculatorState.operator !== DIVIDE
       )
         console.error(ERROR_BAD_OPERATOR);
       else console.error(ERROR_UNEXPECTED);
       break;
   }
 
-  if (operator != NO_OPERATION) {
-    secondaryDisplay.textContent = `${firstOperand} ${operator} ${secondOperand} =`;
+  if (calculatorState.operator != NO_OPERATION) {
+    secondaryDisplay.textContent = `${calculatorState.firstOperand} ${calculatorState.operator} ${calculatorState.secondOperand} =`;
   }
 
   updateHistory();
-  primaryDisplay.textContent = result;
-  firstOperand = result;
-  secondOperand = 0;
-  currentOperand = FIRST_OPERAND;
-  operator = NO_OPERATION;
+  primaryDisplay.textContent = calculatorState.result;
+  calculatorState.firstOperand = calculatorState.result;
+  calculatorState.secondOperand = 0;
+  calculatorState.currentOperand = FIRST_OPERAND;
+  calculatorState.operator = NO_OPERATION;
 }
 
 // Resets all values and displays
 function clearAll() {
-  firstOperand = 0;
-  secondOperand = 0;
-  operator = NO_OPERATION;
+  calculatorState.firstOperand = 0;
+  calculatorState.secondOperand = 0;
+  calculatorState.operator = NO_OPERATION;
   resetActiveOperator();
-  result = null;
-  currentOperand = FIRST_OPERAND;
+  calculatorState.result = null;
+  calculatorState.currentOperand = FIRST_OPERAND;
   primaryDisplay.textContent = TEXT_ZERO;
   secondaryDisplay.textContent = TEXT_INITIAL;
 }
 
 function resetActiveOperator(andOperate = false) {
-  if (isOperatorActive) {
+  if (calculatorState.isOperatorActive) {
     document
       .querySelector(".active-operator")
       .classList.remove("active-operator");
-    isOperatorActive = false;
+    calculatorState.isOperatorActive = false;
 
     if (andOperate) operate();
   }
