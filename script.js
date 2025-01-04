@@ -76,7 +76,7 @@ function handleOperatorClick() {
   // Reset operator, true: and operate
   resetActiveOperator(true);
 
-  if (primaryDisplay.textContent == ERROR_DIVISION) {
+  if (isErrorState()) {
     return;
   }
 
@@ -97,12 +97,7 @@ function handleOperatorClick() {
 }
 
 function handleOperateClick() {
-  if (
-    primaryDisplay.textContent == ERROR_DIVISION ||
-    calculatorState.operator == NO_OPERATION
-  ) {
-    return;
-  }
+  if (isErrorState()) return;
   
   resetActiveOperator();
   updateOperand();
@@ -110,10 +105,7 @@ function handleOperateClick() {
 }
 
 function handleClearClick() {
-  if (
-    primaryDisplay.textContent == ERROR_DIVISION ||
-    (calculatorState.operator == NO_OPERATION && calculatorState.result != null)
-  ) {
+  if (isErrorState()) {
     clearAll();
     return;
   }
@@ -130,10 +122,7 @@ function handleClearClick() {
 }
 
 function handleSignedClick() {
-  if (
-    primaryDisplay.textContent == ERROR_DIVISION ||
-    (calculatorState.operator == NO_OPERATION && calculatorState.result != null)
-  ) {
+  if (isErrorState()) {
     clearAll();
     return;
   }
@@ -143,7 +132,7 @@ function handleSignedClick() {
 }
 
 function handleDotClick() {
-  if (calculatorState.operator == NO_OPERATION && calculatorState.result != null) {
+  if (isErrorState()) {
     clearAll();
   } else if (primaryDisplay.textContent.includes(".")) {
     return;
@@ -182,6 +171,7 @@ function updateHistory() {
 // Throws console.error() if there are invalid values
 function operate() {
   switch (calculatorState.operator) {
+    case NO_OPERATION: return; // <- Notice the return statement here!
     case SUM:
       calculatorState.result = calculatorState.firstOperand + calculatorState.secondOperand;
       break;
@@ -199,10 +189,6 @@ function operate() {
       }
 
       calculatorState.result = calculatorState.firstOperand / calculatorState.secondOperand;
-      break;
-    case NO_OPERATION:
-      calculatorState.firstOperand = Number(primaryDisplay.textContent);
-      calculatorState.result = calculatorState.firstOperand;
       break;
     default:
       if (!Number.isFinite(calculatorState.firstOperand))
@@ -253,4 +239,8 @@ function resetActiveOperator(andOperate = false) {
 
     if (andOperate) operate();
   }
+}
+
+function isErrorState() {
+  return primaryDisplay.textContent == ERROR_DIVISION;
 }
