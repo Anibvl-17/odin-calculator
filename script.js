@@ -192,10 +192,7 @@ function operate() {
       calculatorState.result = calculatorState.firstOperand * calculatorState.secondOperand;
       break;
     case DIVIDE:
-      if (
-        calculatorState.secondOperand == 0 ||
-        !Number.isFinite(calculatorState.firstOperand / calculatorState.secondOperand)
-      ) {
+      if (!Number.isFinite(calculatorState.firstOperand / calculatorState.secondOperand)) {
         clearAll();
         primaryDisplay.textContent = ERROR_DIVISION;
         return;
