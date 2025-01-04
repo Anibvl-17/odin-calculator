@@ -76,9 +76,7 @@ function handleOperatorClick() {
   // Reset operator, true: and operate
   resetActiveOperator(true);
 
-  if (isErrorState()) {
-    return;
-  }
+  if (isErrorState()) return;
 
   calculatorState.currentOperand = SECOND_OPERAND;
   calculatorState.operator = this.textContent;
@@ -156,9 +154,7 @@ function updateHistory() {
 
   history.unshift(`${calculatorState.firstOperand} ${calculatorState.operator} ${calculatorState.secondOperand} = ${calculatorState.result}`);
 
-  if (history.length > 5) {
-    history.pop();
-  }
+  if (history.length > 5) history.pop();
 
   history.forEach((historyEntry) => {
     let historyP = document.createElement("p");
